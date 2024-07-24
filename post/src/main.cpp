@@ -1,8 +1,12 @@
 #include <iostream>
 #include <crow.h>
-#include "sqlite_orm/sqlite_orm.h"
+#include "model/all.hpp"
+#include "service/user.hpp"
 
 int main(int argc, char** argv) {
-    std::cout << "hello world!" << std::endl;
+    auto storage = model::get_storage();
+
+    service::user user_service {storage};
+
     return 0;
 }
