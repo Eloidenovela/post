@@ -21,8 +21,5 @@ namespace model {
                 make_column("passwd", &model::user::passwd)
             );
         }
-
     };
-
-
 }

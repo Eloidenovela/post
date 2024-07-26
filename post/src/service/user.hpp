@@ -2,19 +2,28 @@
 
 #include "../model/user.hpp"
 #include "sqlite_orm/sqlite_orm.h"
+#include "user_contact.hpp"
 #include <exception>
 #include <iostream>
 
 namespace service {
+
     template <typename  Storage>
     class user {
         private:
             Storage & storage;
         public:
-            user(Storage & service) : storage(service) {}
+            user(Storage & service) : storage(service) { }
 
             inline int create(const model::user & user) {
-                return storage.template insert<model::user>(std::move(user));
+
+                try {
+                    return storage.template insert<model::user>(std::move(user));
+                } catch (const std::exception & e) {
+                    std::cerr << "/user/" << __FUNCTION__ << ": " << e.what() << std::endl;
+                }
+
+                return (-1);
             }
 
             inline auto get_all() {
@@ -26,14 +35,19 @@ namespace service {
             }
 
             inline bool remove(const model::user & user) {
+                using namespace sqlite_orm;
                 try {   
-                    storage.template remove<model::user>(std::move(user));
+                    storage.template remove<model::user>(
+                        c(&model::user::id) == user.id
+                    );
+                    
                     return true;
-                } catch (const std::exception &e) {
-                    std::cerr << "in " << __FUNCTION__ << ": " << e.what() << std::endl;
+                } catch (const std::exception & e) {
+                    std::cerr << "/user/" << __FUNCTION__ << ": " << e.what() << std::endl;
                 }
 
                 return false;
             }
     };
+    
 }
