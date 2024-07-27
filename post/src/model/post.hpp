@@ -11,7 +11,8 @@ namespace model {
         int id;
         std::unique_ptr<int> editor_id;
         std::string content;
-        int updated_at;
+        std::string updated_at;
+        std::string time;
         size_t likes;
 
         inline static auto make_table() {
@@ -23,6 +24,7 @@ namespace model {
                 make_column("editor_id", &model::post::editor_id),
                 make_column("content", &model::post::content),
                 make_column("updated_at", &model::post::updated_at),
+                make_column("time", &model::post::time),
                 make_column("likes", &model::post::likes),
                 foreign_key(&model::post::editor_id).references(&model::editor::id)
             );

@@ -48,6 +48,22 @@ namespace service {
 
                 return false;
             }
+
+            inline bool is_user(const model::user & user) {
+                try {
+                    using namespace sqlite_orm;
+                    auto result = storage.template get_all<model::user>(where(
+                        c(&model::user::email) == user.email and
+                        c(&model::user::passwd) == user.passwd
+                    ));
+
+                    return !(result.empty());
+                
+                } catch (const std::exception & e) {
+                    std::cerr << "/user/" << __FUNCTION__ << ": " << e.what() << std::endl;
+                }
+
+                return false;
+            }
     };
-    
 }

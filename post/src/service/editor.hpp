@@ -70,5 +70,21 @@ namespace service {
             return { };
         }
 
+        inline bool is_editor(const model::user & user) {
+            try {
+                using namespace sqlite_orm;
+
+                auto editor = storage.template get_all<model::editor>(
+                    where(
+                        c(&model::editor::user_id) == std::make_unique<int>(user.id)
+                    )
+                );
+
+                return !(editor.empty());
+            } catch (const std::exception & e) {
+                std::cerr << "/editor/" << __FUNCTION__ << ": " << e.what() << std::endl;
+            }
+        }
+
     };
 }

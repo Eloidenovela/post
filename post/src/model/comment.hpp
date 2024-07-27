@@ -13,7 +13,8 @@ namespace model {
         std::unique_ptr<int> user_id;
         std::unique_ptr<int> post_id;
         std::string content;
-        int updated_at;
+        std::string updated_at;
+        std::string time;
 
         inline static auto make_table() {
             using namespace sqlite_orm;
@@ -25,6 +26,7 @@ namespace model {
                 make_column("post_id", &model::comment::post_id),
                 make_column("content", &model::comment::content),
                 make_column("updated_at", &model::comment::updated_at),
+                make_column("time", &model::comment::time),
                 foreign_key(&model::comment::user_id).references(&model::user::id),
                 foreign_key(&model::comment::post_id).references(&model::post::id)
             );
