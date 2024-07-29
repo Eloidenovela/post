@@ -15,19 +15,19 @@ using json = nlohmann::json;
 
 namespace api {
     template <typename S>
-    inline void login(crow::SimpleApp &app, controller::user<S> & user_controller)  {
+    inline void sign_in(crow::SimpleApp &app, controller::user<S> & user_controller)  {
        CROW_ROUTE(app, "/post/login").methods("GET"_method, "POST"_method)
             ([&](const crow::request & req){
 
             try {
                 if (!(req.body.empty())) {
-                    auto user = json::parse(req);
+                    auto date = json::parse(req);
 
                     auto u = model::user {
-                        .name = user["name"].get<std::string>(),
-                        .nickname = user["nickname"].get<std::string>(),
-                        .email = user["email"].get<std::string>(),
-                        .passwd = user["passwd"].get<std::string>()
+                        .name = date["name"].get<std::string>(),
+                        .nickname = date["nickname"].get<std::string>(),
+                        .email = date["email"].get<std::string>(),
+                        .passwd = date["passwd"].get<std::string>()
                     };
                     
                     return crow::response(user_controller.sign_in(u).dump(4));
@@ -49,17 +49,17 @@ namespace api {
             try {
 
                 if (!(req.body.empty())) {
-                    auto sig_up_data = json::parse(req.body);
-                    auto user_data = model::user {
-                        .name = sig_up_data["name"].get<std::string>(),
-                        .nickname = sig_up_data["nickname"].get<std::string>(),
-                        .email = sig_up_data["email"].get<std::string>(),
-                        .passwd = sig_up_data["passwd"].get<std::string>()
+                    auto body = json::parse(req.body);
+                    auto user_body = model::user {
+                        .name = body["name"].get<std::string>(),
+                        .nickname = body["nickname"].get<std::string>(),
+                        .email = body["email"].get<std::string>(),
+                        .passwd = body["passwd"].get<std::string>()
                     };
 
-                    auto contact = sig_up_data["contact"].get<std::string>();
+                    auto contact = body["contact"].get<std::string>();
 
-                    return crow::response(user_controller.sign_up(user_data, contact).dump(4));
+                    return crow::response(user_controller.sign_up(user_body, contact).dump(4));
                 }
             } catch (const std::exception & e) {
                 std::cerr << "api/" << __FUNCTION__ << ": " << e.what() << std::endl;

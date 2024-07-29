@@ -32,6 +32,8 @@ int main(int argc, char** argv) {
     auto usr_controller = controller::user{user_service, contact_service, editor_svc, post_service};
 
     // api::login(usr_controller);
+
+    api::sign_in(app, usr_controller);
     api::sign_up(app, usr_controller);
 
     app.port(8080).bindaddr("0.0.0.0").multithreaded().run();
