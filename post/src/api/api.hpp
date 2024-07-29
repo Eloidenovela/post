@@ -21,7 +21,7 @@ namespace api {
 
             try {
                 if (!(req.body.empty())) {
-                    auto date = json::parse(req);
+                    auto date = json::parse(req.body);
 
                     auto u = model::user {
                         .name = date["name"].get<std::string>(),
