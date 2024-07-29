@@ -7,10 +7,13 @@
 #include "../service/post.hpp"
 #include "../util/util.hpp"
 #include "../util/time.hpp"
+#include "../include/json.hpp"
 #include <memory>
 #include <regex>
 #include <string>
 #include <variant>
+
+using json = nlohmann::json;
 
 namespace controller {
 
@@ -29,21 +32,22 @@ namespace controller {
                 post_service(post_service) 
                 { }
 
-            inline std::variant<bool, util::error> sign_in(const model::user & user) {
+            inline json sign_in(const model::user & user) {
                 if (util::is_email(user.email)) {
-                    return user_service.is_user(user);
+                    return {
+                        {"is_user", user_service.is_user(user)}
+                    };
                 }
 
-                return "INVALID EMAIL";
+                return {
+                    {"error", "INVALID EMAIL"}
+                };
             }
 
-            inline auto sign_up(const model::user & user, std::string contact=std::string()) {
+            inline json sign_up(const model::user & user, std::string contact=std::string()) {
                 if (util::is_email(user.email) and util::is_contact(contact)) {
                     auto id = 0;
-                    if ((id = user_service.create(std::move(user))) != (-1)) {
-                        auto user = model::user {
-                            .id = id
-                        };
+                    if ((id = user_service.create(user)) != (-1)) {
 
                         auto user_contact = model::user_contact {
                             .user_id = std::make_unique<int>(id),
@@ -55,15 +59,22 @@ namespace controller {
                         if (id == (-1)) {
                             user_service.remove(std::move(user));
 
-                            return "Faild";
+                            return {"error", "error"};
                         }
 
-                        return "DONE";
+                        return {
+                            {"name", user.name},
+                            {"nickname", user.nickname},
+                            {"email", user.email},
+                            {"contact", contact}
+                        };
                     }
                 }
+                
+                return {"error", "INVALID_EMAIL_OR_CONTACT"};
             }
 
-            inline auto write_post(const model::user & user, model::post post) {
+            inline json write_post(const model::user & user, model::post post) {
 
                 if (editor_service.is_editor(user)) {
 
@@ -71,11 +82,21 @@ namespace controller {
                     post.updated_at = util::time::get_date();
                     post.time = util::time::get_time();
 
-                    if (post_service.create(std::move(post)) == (-1))
-                        return "Faild";
+                    if (post_service.create(post) == (-1))
+                        return {"error", "post does not created"};
 
-                    return "DONE";
+                    return {
+                        {"content", post.content},
+                        {"likes", post.likes},
+                        {"updated_at", post.updated_at},
+                        {"time", post.time},
+                        {"name", user.name},
+                        {"nickname", user.email},
+                        {"email", user.email}
+                    };
                 }
-            }
+
+                return {"error", "ACESS_DENIED: ONLY EDITORS"};
+            } 
     };
 }
