@@ -5,7 +5,7 @@
 #include "post.hpp"
 #include "sqlite_orm/sqlite_orm.h"
 #include "user.hpp"
-#include "user_contact.hpp"
+#include "contact.hpp"
 #include <iostream>
 
 namespace model {
@@ -20,7 +20,7 @@ namespace model {
             model::editor::make_table(),
             model::post::make_table(),
             model::comment::make_table(),
-            model::user_contact::make_table()
+            model::contact::make_table()
         );
 
         if(not did_sync){

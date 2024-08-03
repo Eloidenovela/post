@@ -3,7 +3,7 @@ add_requires("crow", "sqlite_orm")
 
 
 target("post")
-    set_languages("c++23")
+    set_languages("c++17")
     set_kind("binary")
     add_files("src/*.cpp")
     add_packages("crow","sqlite_orm")

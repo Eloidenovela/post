@@ -1,14 +1,44 @@
 #pragma once
+#include "crow/json.h"
 #include "sqlite_orm/sqlite_orm.h"
 #include <string>
+#include <crow.h>
+#include "../include/json.hpp"
+#include "../util/json.hpp"
+
 
 namespace model {
+
+    using json = nlohmann::json;
+
     struct user {
         int id;
         std::string name;
         std::string nickname;
         std::string email;
         std::string passwd;
+
+        inline json to_json() const {
+            return {
+                {"id", id},
+                {"name", name},
+                {"nickname", nickname},
+                {"email", email},
+                {"passwd", passwd}
+            };
+        }
+
+        inline static model::user from_json(const json & json) {
+            auto to_model = model::user {
+                .id = util::json::get<int>(json, "id"),
+                .name = util::json::get<std::string>(json, "name"),
+                .nickname = util::json::get<std::string>(json, "nickame"),
+                .email = util::json::get<std::string>(json, "email"),
+                .passwd = util::json::get<std::string>(json, "passwd")
+            };
+
+            return to_model;
+        }
 
         inline static auto make_table() {
             using namespace sqlite_orm;

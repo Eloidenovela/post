@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../model/user_contact.hpp"
+#include "../model/contact.hpp"
 #include "sqlite_orm/sqlite_orm.h"
 #include <algorithm>
 #include <exception>
@@ -9,31 +9,31 @@
 
 namespace service {
     template <typename Storage>
-    class user_contact {
+    class contact {
         private:
             Storage & storage;
         public:
-            user_contact(Storage & service) : storage(service) { }
+            contact(Storage & service) : storage(service) { }
             
-            inline int create(const model::user_contact & user_contact) {
+            inline int create(const model::contact & contact) {
                 using namespace sqlite_orm;
-                return storage.template insert<model::user_contact>(std::move(user_contact));
+                return storage.template insert<model::contact>(std::move(contact));
             }
 
             inline auto get_all() {
                 using namespace sqlite_orm;
 
-                return storage.template get_all<model::user_contact>();
+                return storage.template get_all<model::contact>();
             }
 
 
-            inline std::vector<model::user_contact> get_by_user(const model::user & user) {
+            inline std::vector<model::contact> get_by_user(const model::user & user) {
                 try {
                     using namespace sqlite_orm;
 
-                    return storage.template get_all<model::user_contact>(
+                    return storage.template get_all<model::contact>(
                         where(
-                            c(&model::user_contact::user_id) == user.id
+                            c(&model::contact::user_id) == user.id
                         )
                     );
 
@@ -44,15 +44,15 @@ namespace service {
                 return { };
             }
 
-            inline void update(const model::user_contact & user_contact) {
-                storage.template update<model::user_contact>(std::move(user_contact));
+            inline void update(const model::contact & contact) {
+                storage.template update<model::contact>(std::move(contact));
             }
 
-            inline bool remove(const model::user_contact & user_contact) {
+            inline bool remove(const model::contact & contact) {
                 try {
                     using namespace sqlite_orm;
-                    storage.template remove<model::user_contact>(
-                        c(&model::user_contact::id) == user_contact.id
+                    storage.template remove<model::contact>(
+                        c(&model::contact::id) == contact.id
                     );
 
                     return true;

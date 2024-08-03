@@ -2,7 +2,7 @@
 
 #include "../service/user.hpp"
 #include "../service/comment.hpp"
-#include "../service/user_contact.hpp"
+#include "../service/contact.hpp"
 #include "../service/editor.hpp"
 #include "../service/post.hpp"
 #include "../util/util.hpp"
@@ -21,16 +21,18 @@ namespace controller {
     class user {
         private:
             service::user<Service> & user_service;
-            service::user_contact<Service> & contact_service;
+            service::contact<Service> & contact_service;
             service::editor<Service> & editor_service;
             service::post<Service> & post_service;
         public:
-            user(service::user<Service> & user_service, service::user_contact<Service> & contact_service, service::editor<Service> & editor_service, service::post<Service> & post_service) : 
+            user(service::user<Service> & user_service, service::contact<Service> & contact_service, service::editor<Service> & editor_service, service::post<Service> & post_service) : 
                 user_service(user_service), 
                 contact_service(contact_service),
                 editor_service(editor_service),
                 post_service(post_service) 
                 { }
+
+        public:
 
             inline json sign_in(const model::user & user) {
                 if (util::is_email(user.email)) {
@@ -49,12 +51,12 @@ namespace controller {
                     auto id = 0;
                     if ((id = user_service.create(user)) != (-1)) {
 
-                        auto user_contact = model::user_contact {
+                        auto contact = model::contact {
                             .user_id = std::make_unique<int>(id),
                             .contact = contact
                         };
 
-                        id = contact_service.create(user_contact);
+                        id = contact_service.create(contact);
 
                         if (id == (-1)) {
                             user_service.remove(std::move(user));
@@ -62,12 +64,7 @@ namespace controller {
                             return {"error", "error"};
                         }
 
-                        return {
-                            {"name", user.name},
-                            {"nickname", user.nickname},
-                            {"email", user.email},
-                            {"contact", contact}
-                        };
+                        return user.to_json();
                     }
                 }
                 
@@ -85,15 +82,7 @@ namespace controller {
                     if (post_service.create(post) == (-1))
                         return {"error", "post does not created"};
 
-                    return {
-                        {"content", post.content},
-                        {"likes", post.likes},
-                        {"updated_at", post.updated_at},
-                        {"time", post.time},
-                        {"name", user.name},
-                        {"nickname", user.email},
-                        {"email", user.email}
-                    };
+                    return post.to_json();
                 }
 
                 return {"error", "ACESS_DENIED: ONLY EDITORS"};

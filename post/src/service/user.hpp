@@ -2,7 +2,7 @@
 
 #include "../model/user.hpp"
 #include "sqlite_orm/sqlite_orm.h"
-#include "user_contact.hpp"
+#include "contact.hpp"
 #include <exception>
 #include <iostream>
 
