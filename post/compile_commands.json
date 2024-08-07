@@ -1,6 +1,6 @@
 [
 {
   "directory": "/home/eloide-novela/Documentos/Mine/mine/post/post",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-fvisibility=hidden", "-fvisibility-inlines-hidden", "-O3", "-std=c++17", "-I", "/home/eloide-novela/.xmake/packages/c/crow/2023.07.22/d3ec5c76dd0543ebbf0258f0585ec5c9/include", "-I", "/home/eloide-novela/.xmake/packages/a/asio/1.30.2/c1047cd667c14a44bea718715a77a7f5/include", "-I", "/home/eloide-novela/.xmake/packages/s/sqlite_orm/1.8.2/1f8db91e3f1b469cb4a50633fce447af/include", "-I", "/home/eloide-novela/.xmake/packages/s/sqlite3/3.46.0+0/15d80ea602c54782afc2328af49f9573/include", "-DNDEBUG", "-o", "build/.objs/post/linux/x86_64/release/src/main.cpp.o", "src/main.cpp"],
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-fvisibility=hidden", "-fvisibility-inlines-hidden", "-O3", "-std=c++17", "-I", "/home/eloide-novela/.xmake/packages/c/crow/2023.07.22/d3ec5c76dd0543ebbf0258f0585ec5c9/include", "-I", "/home/eloide-novela/.xmake/packages/a/asio/1.30.2/c1047cd667c14a44bea718715a77a7f5/include", "-I", "/home/eloide-novela/.xmake/packages/s/sqlite_orm/1.8.2/1f8db91e3f1b469cb4a50633fce447af/include", "-I", "/home/eloide-novela/.xmake/packages/s/sqlite3/3.46.0+0/15d80ea602c54782afc2328af49f9573/include", "-I", "/home/eloide-novela/.xmake/packages/w/webui/2.4.2/d52c4541111b4df0bceeb9533c6fe08c/include", "-DNDEBUG", "-o", "build/.objs/post/linux/x86_64/release/src/main.cpp.o", "src/main.cpp"],
   "file": "src/main.cpp"
 }]

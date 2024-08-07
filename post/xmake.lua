@@ -1,12 +1,12 @@
 add_rules("mode.debug", "mode.release", "plugin.compile_commands.autoupdate")
-add_requires("crow", "sqlite_orm")
+add_requires("crow", "sqlite_orm", "webui") 
 
 
 target("post")
     set_languages("c++17")
     set_kind("binary")
     add_files("src/*.cpp")
-    add_packages("crow","sqlite_orm")
+    add_packages("crow","sqlite_orm", "webui")
 
 
 --

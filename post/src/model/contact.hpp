@@ -26,7 +26,7 @@ namespace model {
         inline static model::contact from_json(const json & json) {
             auto model = model::contact {
                 .id = util::json::get<int>(json, "id"),
-                .user_id = util::json::get<decltype(model::contact::user_id)>(json, "user_id"),
+                .user_id = std::make_unique<int>(util::json::get<int>(json, "user_id")),
                 .contact = util::json::get<std::string>(json, "contact")
             };
 

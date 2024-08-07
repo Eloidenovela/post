@@ -46,17 +46,18 @@ namespace controller {
                 };
             }
 
-            inline json sign_up(const model::user & user, std::string contact=std::string()) {
+            inline json sign_up(model::user & user, std::string contact=std::string()) {
                 if (util::is_email(user.email) and util::is_contact(contact)) {
                     auto id = 0;
                     if ((id = user_service.create(user)) != (-1)) {
-
-                        auto contact = model::contact {
+                        
+                        user.id = id;
+                        auto model = model::contact {
                             .user_id = std::make_unique<int>(id),
                             .contact = contact
                         };
 
-                        id = contact_service.create(contact);
+                        id = contact_service.create(model);
 
                         if (id == (-1)) {
                             user_service.remove(std::move(user));
@@ -86,6 +87,6 @@ namespace controller {
                 }
 
                 return {"error", "ACESS_DENIED: ONLY EDITORS"};
-            } 
+            }
     };
 }

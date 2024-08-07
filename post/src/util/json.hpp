@@ -9,7 +9,7 @@ namespace util {
             template <typename T>
             inline static T get(const nlohmann::json & json, const std::string & field) {
                 try {
-                    return (T) json[field].get<T>();
+                    return json[field].get<T>();
                 } catch (const std::exception & e) {
                     throw std::runtime_error("expected field: " + field);
                 }

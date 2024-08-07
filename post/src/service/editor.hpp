@@ -84,6 +84,7 @@ namespace service {
             } catch (const std::exception & e) {
                 std::cerr << "/editor/" << __FUNCTION__ << ": " << e.what() << std::endl;
             }
+            return false;
         }
 
     };

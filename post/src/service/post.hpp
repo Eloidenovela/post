@@ -44,7 +44,7 @@ namespace service {
                 return false;
             }
 
-            inline std::vector<model::post> get_all() {
+            inline std::vector<model::post> get_all() const {
                 return storage.template get_all<model::post>();
             }
 

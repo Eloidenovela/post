@@ -2,6 +2,7 @@
 
 #include <crow.h>
 #include "api/api.hpp"
+#include "controller/post.hpp"
 #include "controller/user.hpp"
 #include "crow/app.h"
 #include "model/all.hpp"
@@ -30,10 +31,12 @@ namespace server {
         auto editor_svc = service::editor{storage};
 
         auto usr_controller = controller::user{user_service, contact_service, editor_svc, post_service};
-
+        auto post_controller = controller::post{post_service};
+        
         api::sign_in(app, usr_controller);
         api::sign_up(app, usr_controller);
-
+        api::rpost(app, post_controller);
+        api::wpost(app, usr_controller);
 
         app.port(8080)
             .server_name("post")

@@ -17,6 +17,7 @@ namespace model {
         std::string nickname;
         std::string email;
         std::string passwd;
+        bool is_admin;
 
         inline json to_json() const {
             return {
@@ -24,17 +25,19 @@ namespace model {
                 {"name", name},
                 {"nickname", nickname},
                 {"email", email},
-                {"passwd", passwd}
+                {"passwd", passwd},
+                {"is_admin", is_admin}
             };
         }
 
         inline static model::user from_json(const json & json) {
             auto to_model = model::user {
-                .id = util::json::get<int>(json, "id"),
+                // .id = util::json::get<int>(json, "id"),
                 .name = util::json::get<std::string>(json, "name"),
-                .nickname = util::json::get<std::string>(json, "nickame"),
+                .nickname = util::json::get<std::string>(json, "nickname"),
                 .email = util::json::get<std::string>(json, "email"),
-                .passwd = util::json::get<std::string>(json, "passwd")
+                .passwd = util::json::get<std::string>(json, "passwd"),
+                .is_admin = util::json::get<bool>(json, "is_admin")
             };
 
             return to_model;
@@ -48,7 +51,8 @@ namespace model {
                 make_column("name", &model::user::name),
                 make_column("nicknamename", &model::user::nickname),
                 make_column("email", &model::user::email, unique()),
-                make_column("passwd", &model::user::passwd)
+                make_column("passwd", &model::user::passwd),
+                make_column("is_admin", &model::user::is_admin)
             );
         }
     };

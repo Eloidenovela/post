@@ -23,7 +23,7 @@ namespace model {
         inline static model::editor from_json(const json & json) {
             auto model = model::editor {
                 .id = util::json::get<int>(json, "id"),
-                .user_id = util::json::get<decltype(model::editor::user_id)>(json, "user_id")
+                .user_id = std::make_unique<int>(util::json::get<int>(json, "user_id"))
             };
 
             return model;

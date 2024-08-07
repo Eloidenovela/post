@@ -33,7 +33,7 @@ namespace model {
         inline static model::post from_json(const json & json) {
             auto model = model::post {
                 .id = util::json::get<int>(json, "id"),
-                .editor_id = util::json::get<decltype(model::post::editor_id)>(json, "editor_id"),
+                .editor_id = std::make_unique<int>(util::json::get<int>(json, "editor_id")),
                 .content = util::json::get<std::string>(json, "content"),
                 .updated_at = util::json::get<std::string>(json, "updated_at"),
                 .time = util::json::get<decltype(model::post::time)>(json, "time"),

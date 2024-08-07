@@ -33,8 +33,8 @@ namespace model {
         inline static model::comment from_json(const json & json) {
             auto model = model::comment {
                 .id = util::json::get<int>(json, "id"),
-                .user_id = util::json::get<decltype(model::comment::user_id)>(json, "user_id"),
-                .post_id = util::json::get<decltype(model::comment::post_id)>(json, "post_id"),
+                .user_id = std::make_unique<int>(util::json::get<int>(json, "user_id")),
+                .post_id = std::make_unique<int>(util::json::get<int>(json, "post_id")),
                 .content = util::json::get<std::string>(json, "content"),
                 .updated_at = util::json::get<std::string>(json, "updated_at"),
                 .time = util::json::get<std::string>(json, "time")

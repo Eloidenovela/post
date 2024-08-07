@@ -2,7 +2,7 @@
 
 #include "../model/user.hpp"
 #include "sqlite_orm/sqlite_orm.h"
-#include "contact.hpp"
+#include "../model/contact.hpp"
 #include <exception>
 #include <iostream>
 
@@ -64,6 +64,18 @@ namespace service {
                 }
 
                 return false;
+            }
+
+            inline bool is_admin(const model::user& user) {
+                using namespace sqlite_orm;
+                auto res = storage.template get_all<model::user>(
+                    where(
+                        (c(&model::user::id) == user.id) and 
+                        (c(&model::user::is_admin) == true)
+                    )
+                );
+
+                return !(res.empty());
             }
     };
 }
