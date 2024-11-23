@@ -1,5 +1,5 @@
 /post/compile_commands.json
-
+post/.cache
 # Prerequisites
 *.d
 
